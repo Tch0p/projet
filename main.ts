@@ -1,32 +1,63 @@
-input.onButtonPressed(Button.A, function () {
-    basic.clearScreen()
-    pins.analogWritePin(AnalogPin.P0, 338)
-    radio.sendString("test")
-    basic.showLeds(`
-        . . . . .
-        . . # . .
-        . # # # .
-        . . # . .
-        . . . . .
-        `)
-})
-radio.onReceivedString(function (receivedString) {
-    basic.showLeds(`
-        . . # . .
-        . # # # .
-        # # # # #
-        . # # # .
-        . . # . .
-        `)
-    if (pins.digitalReadPin(DigitalPin.P1) == 1) {
-        pins.digitalWritePin(DigitalPin.P0, 1)
+radio.onReceivedNumber(function (receivedNumber) {
+    if (pins.analogReadPin(AnalogPin.P1) <= 200) {
+        basic.showLeds(`
+            . . # . .
+            . # # # .
+            # # # # #
+            . # # # .
+            . . # . .
+            `)
+        pins.analogWritePin(AnalogPin.P0, 1023)
+        basic.pause(2000)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . # . .
+            . . . . .
+            . . . . .
+            `)
+        pins.analogWritePin(AnalogPin.P0, 0)
+    } else {
+        basic.showLeds(`
+            # . . . #
+            # # . . #
+            # . # . #
+            # . . # #
+            # . . . #
+            `)
     }
 })
-input.onButtonPressed(Button.B, function () {
-    basic.clearScreen()
-    pins.analogWritePin(AnalogPin.P0, 0)
+input.onButtonPressed(Button.A, function () {
+    if (pins.analogReadPin(AnalogPin.P1) <= 200) {
+        radio.sendNumber(1)
+        basic.showLeds(`
+            . . . . .
+            . . # . .
+            . # # # .
+            . . # . .
+            . . . . .
+            `)
+        pins.analogWritePin(AnalogPin.P0, 495)
+        basic.pause(2000)
+        basic.showLeds(`
+            . . . . .
+            . . . . .
+            . . # . .
+            . . . . .
+            . . . . .
+            `)
+        pins.analogWritePin(AnalogPin.P0, 0)
+    } else {
+        basic.showLeds(`
+            # . . . #
+            # # . . #
+            # . # . #
+            # . . # #
+            # . . . #
+            `)
+    }
 })
-radio.setGroup(0)
+radio.setGroup(1)
 basic.showLeds(`
     . . . . .
     . . . . .
